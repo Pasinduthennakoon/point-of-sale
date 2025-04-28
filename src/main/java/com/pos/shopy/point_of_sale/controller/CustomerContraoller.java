@@ -1,12 +1,17 @@
 package com.pos.shopy.point_of_sale.controller;
 
 import com.pos.shopy.point_of_sale.dto.CustomerDTO;
+import com.pos.shopy.point_of_sale.service.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/customer")
 @CrossOrigin
 public class CustomerContraoller {
+
+    @Autowired
+    private CustomerService customerService;
 
 //    @GetMapping(path = "/get-1")
 //    public String getCustomer1(){
@@ -26,6 +31,7 @@ public class CustomerContraoller {
     @PostMapping(path = "/save")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){
         System.out.println("come" + customerDTO.getCustomerName());
+        String id = customerService.addCustomer(customerDTO);
         return null;
     }
 }
