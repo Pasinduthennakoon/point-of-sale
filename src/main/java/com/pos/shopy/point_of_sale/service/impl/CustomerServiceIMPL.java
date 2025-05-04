@@ -27,8 +27,13 @@ public class CustomerServiceIMPL implements CustomerService {
                customerDTO.getNic(),
                customerDTO.isActiveState()
         );
-        customerRepo.save(customer);
 
-        return customerDTO.getCustomerName() + " Saved!";
+        if(!customerRepo.existsById(customer.getCustomerId())){
+            customerRepo.save(customer);
+            return customerDTO.getCustomerName() + " Saved!";
+        }else{
+            return "Id is already exists";
+        }
+
     }
 }
