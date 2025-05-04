@@ -29,9 +29,9 @@ public class CustomerContraoller {
 //    }
 
     @PostMapping(path = "/save")
-    public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){
-        System.out.println("come" + customerDTO.getCustomerName());
+    public String saveCustomer(@RequestBody CustomerDTO customerDTO){
         String id = customerService.addCustomer(customerDTO);
-        return null;
+
+        return id;
     }
 }
