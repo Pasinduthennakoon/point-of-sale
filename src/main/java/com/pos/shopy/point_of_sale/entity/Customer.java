@@ -1,12 +1,8 @@
 package com.pos.shopy.point_of_sale.entity;
 
 import com.vladmihalcea.hibernate.type.json.JsonType;
+import jakarta.persistence.*;
 import org.hibernate.annotations.Type;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 
 import java.util.List;
 
@@ -16,6 +12,7 @@ public class Customer {
 
     @Id
     @Column(name = "customer_id",length = 45)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int customerId;
 
     @Column(name = "customer_name",length = 100,nullable = false)
@@ -43,6 +40,15 @@ public class Customer {
 
     public Customer(int customerId, String customerName, String customerAddress, double customerSalary, List<String> contactNumbers, String nic, boolean activeState) {
         this.customerId = customerId;
+        this.customerName = customerName;
+        this.customerAddress = customerAddress;
+        this.customerSalary = customerSalary;
+        this.contactNumbers = contactNumbers;
+        this.nic = nic;
+        this.activeState = activeState;
+    }
+
+    public Customer(String customerName, String customerAddress, double customerSalary, List<String> contactNumbers, String nic, boolean activeState) {
         this.customerName = customerName;
         this.customerAddress = customerAddress;
         this.customerSalary = customerSalary;

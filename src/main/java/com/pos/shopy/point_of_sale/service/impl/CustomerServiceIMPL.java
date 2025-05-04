@@ -1,6 +1,7 @@
 package com.pos.shopy.point_of_sale.service.impl;
 
 import com.pos.shopy.point_of_sale.dto.CustomerDTO;
+import com.pos.shopy.point_of_sale.dto.request.CustomerSaveRequestDTO;
 import com.pos.shopy.point_of_sale.entity.Customer;
 import com.pos.shopy.point_of_sale.repo.CustomerRepo;
 import com.pos.shopy.point_of_sale.service.CustomerService;
@@ -16,21 +17,20 @@ public class CustomerServiceIMPL implements CustomerService {
     private CustomerRepo customerRepo;
 
     @Override
-    public String addCustomer(CustomerDTO customerDTO) {
+    public String addCustomer(CustomerSaveRequestDTO customerSaveRequestDTO) {
 
         Customer customer = new Customer(
-               customerDTO.getCustomerId(),
-               customerDTO.getCustomerName(),
-               customerDTO.getCustomerAddress(),
-               customerDTO.getCustomerSalary(),
-               customerDTO.getContactNumbers(),
-               customerDTO.getNic(),
-               customerDTO.isActiveState()
+                customerSaveRequestDTO.getCustomerName(),
+                customerSaveRequestDTO.getCustomerAddress(),
+                customerSaveRequestDTO.getCustomerSalary(),
+                customerSaveRequestDTO.getContactNumbers(),
+                customerSaveRequestDTO.getNic(),
+                true
         );
 
         if(!customerRepo.existsById(customer.getCustomerId())){
             customerRepo.save(customer);
-            return customerDTO.getCustomerName() + " Saved!";
+            return customer.getCustomerName() + " Saved!";
         }else{
             return "Id is already exists";
         }
