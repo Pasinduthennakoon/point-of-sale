@@ -2,6 +2,7 @@ package com.pos.shopy.point_of_sale.dto.request;
 
 import java.util.List;
 
+// id and active state is not pass in frontend it is genarates by backend
 public class CustomerSaveRequestDTO {
 
     private String customerName;

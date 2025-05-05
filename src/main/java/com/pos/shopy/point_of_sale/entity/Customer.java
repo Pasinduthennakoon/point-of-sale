@@ -12,7 +12,7 @@ public class Customer {
 
     @Id
     @Column(name = "customer_id",length = 45)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO) //genarate id on auto
     private int customerId;
 
     @Column(name = "customer_name",length = 100,nullable = false)
@@ -48,6 +48,7 @@ public class Customer {
         this.activeState = activeState;
     }
 
+    //new constructor using id is not pass in frontend
     public Customer(String customerName, String customerAddress, double customerSalary, List<String> contactNumbers, String nic, boolean activeState) {
         this.customerName = customerName;
         this.customerAddress = customerAddress;
