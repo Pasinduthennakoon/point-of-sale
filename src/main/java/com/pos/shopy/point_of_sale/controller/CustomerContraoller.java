@@ -14,13 +14,6 @@ public class CustomerContraoller {
     @Autowired
     private CustomerService customerService;
 
-//    @GetMapping(path = "/get-2")
-//    public String getCustomer2(){
-//        String customer = "Customer 2";
-//        System.out.println(customer);
-//        return customer;
-//    }
-
     @PostMapping(path = "/save")
     public String saveCustomer(@RequestBody CustomerSaveRequestDTO customerSaveRequestDTO){
         String id = customerService.addCustomer(customerSaveRequestDTO);
