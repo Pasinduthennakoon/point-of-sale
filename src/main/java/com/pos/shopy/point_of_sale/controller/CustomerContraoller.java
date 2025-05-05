@@ -7,6 +7,8 @@ import com.pos.shopy.point_of_sale.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/customer")
 @CrossOrigin
@@ -35,6 +37,14 @@ public class CustomerContraoller {
     public CustomerDTO getCustomerById(@RequestParam(value = "id") int id){
         CustomerDTO customerDTO = customerService.getCustomerById(id);
         return customerDTO;
+    }
+
+    @GetMapping(
+            path = "/get-all-customers"
+    )
+    public List<CustomerDTO> getAllCustomers(){
+        List<CustomerDTO> allCustomers = customerService.getAllCustomers();
+        return allCustomers;
     }
 
 
