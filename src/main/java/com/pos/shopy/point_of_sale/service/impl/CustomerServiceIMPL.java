@@ -1,5 +1,6 @@
 package com.pos.shopy.point_of_sale.service.impl;
 
+import com.pos.shopy.point_of_sale.dto.CustomerDTO;
 import com.pos.shopy.point_of_sale.dto.request.CustomerSaveRequestDTO;
 import com.pos.shopy.point_of_sale.dto.request.CustomerUpdateRequestDTO;
 import com.pos.shopy.point_of_sale.entity.Customer;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerServiceIMPL implements CustomerService {
@@ -29,10 +31,10 @@ public class CustomerServiceIMPL implements CustomerService {
                 false
         );
 
-        if(!customerRepo.existsById(customer.getCustomerId())){
+        if (!customerRepo.existsById(customer.getCustomerId())) {
             customerRepo.save(customer);
             return customer.getCustomerName() + " Saved!";
-        }else{
+        } else {
             return "Id is already exists";
         }
 
@@ -40,7 +42,7 @@ public class CustomerServiceIMPL implements CustomerService {
 
     @Override
     public String updateCustomer(CustomerUpdateRequestDTO customerUpdateRequestDTO) {
-        if(customerRepo.existsById(customerUpdateRequestDTO.getCustomerId())){
+        if (customerRepo.existsById(customerUpdateRequestDTO.getCustomerId())) {
             Customer customer = customerRepo.getReferenceById(customerUpdateRequestDTO.getCustomerId());
 
             customer.setCustomerName(customerUpdateRequestDTO.getCustomerName());
@@ -52,10 +54,31 @@ public class CustomerServiceIMPL implements CustomerService {
 
             customerRepo.save(customer);
             return customer.getCustomerName() + " Updated";
-        }else{
+        } else {
             System.out.println("that customer no longer in the database");
             return "that customer no longer in the database";
         }
 
     }
+
+    @Override
+    public CustomerDTO getCustomerById(int id) {
+        Optional<Customer> customer = customerRepo.findById(id);
+        if (customer.isPresent()) {
+            CustomerDTO customerDTO = new CustomerDTO(
+                    customer.get().getCustomerId(),
+                    customer.get().getCustomerName(),
+                    customer.get().getCustomerAddress(),
+                    customer.get().getCustomerSalary(),
+                    customer.get().getContactNumbers(),
+                    customer.get().getNic(),
+                    customer.get().isActiveState()
+            );
+
+            return customerDTO;
+        } else {
+            return null;
+        }
+    }
+
 }

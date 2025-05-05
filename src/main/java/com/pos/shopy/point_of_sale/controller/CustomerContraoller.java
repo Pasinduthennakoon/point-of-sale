@@ -1,5 +1,6 @@
 package com.pos.shopy.point_of_sale.controller;
 
+import com.pos.shopy.point_of_sale.dto.CustomerDTO;
 import com.pos.shopy.point_of_sale.dto.request.CustomerSaveRequestDTO;
 import com.pos.shopy.point_of_sale.dto.request.CustomerUpdateRequestDTO;
 import com.pos.shopy.point_of_sale.service.CustomerService;
@@ -25,6 +26,15 @@ public class CustomerContraoller {
     public String updateCustomer(@RequestBody CustomerUpdateRequestDTO customerUpdateRequestDTO){
         String state = customerService.updateCustomer(customerUpdateRequestDTO);
         return state;
+    }
+
+    @GetMapping(
+            path = "/get-by-id",
+            params = "id"
+                )
+    public CustomerDTO getCustomerById(@RequestParam(value = "id") int id){
+        CustomerDTO customerDTO = customerService.getCustomerById(id);
+        return customerDTO;
     }
 
 
