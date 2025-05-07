@@ -2,6 +2,7 @@ package com.pos.shopy.point_of_sale.controller;
 
 import com.pos.shopy.point_of_sale.dto.CustomerDTO;
 import com.pos.shopy.point_of_sale.dto.request.CustomerSaveRequestDTO;
+import com.pos.shopy.point_of_sale.dto.request.CustomerUpdateQuaryRequestDTO;
 import com.pos.shopy.point_of_sale.dto.request.CustomerUpdateRequestDTO;
 import com.pos.shopy.point_of_sale.dto.response.ResponseActiveCustomerNameAndNumberDto;
 import com.pos.shopy.point_of_sale.service.CustomerService;
@@ -84,6 +85,17 @@ public class CustomerController {
         List<ResponseActiveCustomerNameAndNumberDto> customerDTOS = customerService.getAllCustomersByActiveStateOnlyNameAndNumber();
         return customerDTOS;
 
+    }
+
+    @PutMapping(
+            path = "/update-quary/{id}"
+    )
+    public String updateCustomer(
+            @RequestBody CustomerUpdateQuaryRequestDTO customerUpdateQuaryRequestDTO,
+            @PathVariable(value = "id") int id)
+    {
+        String state = customerService.updateCustomerQuary(customerUpdateQuaryRequestDTO, id);
+        return state;
     }
 
 

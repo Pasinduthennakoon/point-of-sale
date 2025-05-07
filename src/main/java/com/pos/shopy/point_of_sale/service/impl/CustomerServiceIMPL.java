@@ -2,6 +2,7 @@ package com.pos.shopy.point_of_sale.service.impl;
 
 import com.pos.shopy.point_of_sale.dto.CustomerDTO;
 import com.pos.shopy.point_of_sale.dto.request.CustomerSaveRequestDTO;
+import com.pos.shopy.point_of_sale.dto.request.CustomerUpdateQuaryRequestDTO;
 import com.pos.shopy.point_of_sale.dto.request.CustomerUpdateRequestDTO;
 import com.pos.shopy.point_of_sale.dto.response.ResponseActiveCustomerNameAndNumberDto;
 import com.pos.shopy.point_of_sale.entity.Customer;
@@ -12,9 +13,8 @@ import jakarta.el.PropertyNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -162,6 +162,16 @@ public class CustomerServiceIMPL implements CustomerService {
             return getcustomers;
         }else{
             throw new Exception("Active customers not found");
+        }
+    }
+
+    @Override
+    public String updateCustomerQuary(CustomerUpdateQuaryRequestDTO customerUpdateQuaryRequestDTO, int id) {
+        if(customerRepo.existsById(id)){
+            customerRepo.updateCustomerByQuary(customerUpdateQuaryRequestDTO.getCustomerName(), customerUpdateQuaryRequestDTO.getNic(), id);
+            return "updated customer id : " + id;
+        }else{
+            return "Customer not exists id : " + id;
         }
     }
 
