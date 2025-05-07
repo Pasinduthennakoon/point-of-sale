@@ -3,6 +3,7 @@ package com.pos.shopy.point_of_sale.controller;
 import com.pos.shopy.point_of_sale.dto.CustomerDTO;
 import com.pos.shopy.point_of_sale.dto.request.CustomerSaveRequestDTO;
 import com.pos.shopy.point_of_sale.dto.request.CustomerUpdateRequestDTO;
+import com.pos.shopy.point_of_sale.dto.response.ResponseActiveCustomerNameAndNumberDto;
 import com.pos.shopy.point_of_sale.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -72,6 +73,15 @@ public class CustomerController {
     )
     public List<CustomerDTO> getCustomersByActiveState() throws Exception {
         List<CustomerDTO> customerDTOS = customerService.getAllCustomersByActiveState();
+        return customerDTOS;
+
+    }
+
+    @GetMapping(
+            path = {"/get-by-active-state-name-and-number"}
+    )
+    public List<ResponseActiveCustomerNameAndNumberDto> getCustomersByActiveStateOnlyNameAndNumber() throws Exception {
+        List<ResponseActiveCustomerNameAndNumberDto> customerDTOS = customerService.getAllCustomersByActiveStateOnlyNameAndNumber();
         return customerDTOS;
 
     }

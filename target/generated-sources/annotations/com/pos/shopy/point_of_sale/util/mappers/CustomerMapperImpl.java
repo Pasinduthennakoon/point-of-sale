@@ -1,6 +1,7 @@
 package com.pos.shopy.point_of_sale.util.mappers;
 
 import com.pos.shopy.point_of_sale.dto.CustomerDTO;
+import com.pos.shopy.point_of_sale.dto.response.ResponseActiveCustomerNameAndNumberDto;
 import com.pos.shopy.point_of_sale.entity.Customer;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-05-06T18:10:47+0530",
+    date = "2025-05-07T10:21:48+0530",
     comments = "version: 1.4.1.Final, compiler: javac, environment: Java 17.0.9 (Oracle Corporation)"
 )
 @Component
@@ -49,5 +50,35 @@ public class CustomerMapperImpl implements CustomerMapper {
         }
 
         return list;
+    }
+
+    @Override
+    public List<ResponseActiveCustomerNameAndNumberDto> entityListToDtoListOnlyNameAndNumber(List<Customer> customer) {
+        if ( customer == null ) {
+            return null;
+        }
+
+        List<ResponseActiveCustomerNameAndNumberDto> list = new ArrayList<ResponseActiveCustomerNameAndNumberDto>( customer.size() );
+        for ( Customer customer1 : customer ) {
+            list.add( customerToResponseActiveCustomerNameAndNumberDto( customer1 ) );
+        }
+
+        return list;
+    }
+
+    protected ResponseActiveCustomerNameAndNumberDto customerToResponseActiveCustomerNameAndNumberDto(Customer customer) {
+        if ( customer == null ) {
+            return null;
+        }
+
+        ResponseActiveCustomerNameAndNumberDto responseActiveCustomerNameAndNumberDto = new ResponseActiveCustomerNameAndNumberDto();
+
+        responseActiveCustomerNameAndNumberDto.setCustomerName( customer.getCustomerName() );
+        List<String> list = customer.getContactNumbers();
+        if ( list != null ) {
+            responseActiveCustomerNameAndNumberDto.setContactNumbers( new ArrayList<String>( list ) );
+        }
+
+        return responseActiveCustomerNameAndNumberDto;
     }
 }
