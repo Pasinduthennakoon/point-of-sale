@@ -13,4 +13,6 @@ public interface CustomerRepo extends JpaRepository<Customer, Integer> {
 
     List<Customer> findAllByCustomerNameEquals(String name);
 
+    List<Customer> findAllByActiveStateEquals(boolean b);
+
 }

@@ -67,5 +67,14 @@ public class CustomerContraoller {
         return customers;
     }
 
+    @GetMapping(
+            path = {"/get-by-active-state"}
+    )
+    public List<CustomerDTO> getCustomersByActiveState() throws Exception {
+        List<CustomerDTO> customerDTOS = customerService.getAllCustomersByActiveState();
+        return customerDTOS;
+
+    }
+
 
 }

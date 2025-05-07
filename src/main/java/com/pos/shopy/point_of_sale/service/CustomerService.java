@@ -19,4 +19,7 @@ public interface CustomerService {
     boolean deleteCustomer(int id);
 
     List<CustomerDTO> getCustomersByName(String name);
+
+    List<CustomerDTO> getAllCustomersByActiveState() throws Exception;
+
 }
