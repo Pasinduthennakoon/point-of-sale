@@ -6,11 +6,13 @@ import com.pos.shopy.point_of_sale.dto.request.CustomerUpdateRequestDTO;
 import com.pos.shopy.point_of_sale.entity.Customer;
 import com.pos.shopy.point_of_sale.repo.CustomerRepo;
 import com.pos.shopy.point_of_sale.service.CustomerService;
+import com.pos.shopy.point_of_sale.util.mappers.CustomerMapper;
+import jakarta.el.PropertyNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +25,9 @@ public class CustomerServiceIMPL implements CustomerService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private CustomerMapper customerMapper;
 
     @Override
     public String addCustomer(CustomerSaveRequestDTO customerSaveRequestDTO) {
@@ -82,7 +87,8 @@ public class CustomerServiceIMPL implements CustomerService {
 //            );
 //
 //            return customerDTO;
-            CustomerDTO customerDTO = modelMapper.map(customer.get(), CustomerDTO.class);
+//            CustomerDTO customerDTO = modelMapper.map(customer.get(), CustomerDTO.class);
+            CustomerDTO customerDTO = customerMapper.entityToDto(customer.get()); /*mapstruct*/
             return customerDTO;
         } else {
             return null;
@@ -92,7 +98,8 @@ public class CustomerServiceIMPL implements CustomerService {
     @Override
     public List<CustomerDTO> getAllCustomers() {
         List<Customer> getCustomers = customerRepo.findAll();
-        List<CustomerDTO> customerDTOList = new ArrayList<>();
+
+//        List<CustomerDTO> customerDTOList = new ArrayList<>();
 
 //        for (Customer c : getCustomers) {
 //            CustomerDTO customerDTO = new CustomerDTO(
@@ -107,9 +114,32 @@ public class CustomerServiceIMPL implements CustomerService {
 //            customerDTOList.add(customerDTO);
 //        }
 
-        List<CustomerDTO> customerDTOS = modelMapper.map(getCustomers,new TypeToken<List<CustomerDTO>>(){}.getType());
+//        List<CustomerDTO> customerDTOS = modelMapper.map(getCustomers,new TypeToken<List<CustomerDTO>>(){}.getType());
 
+        List<CustomerDTO> customerDTOS = customerMapper.entityListToDtoList(getCustomers); /*mapstruct*/
         return customerDTOS;
+    }
+
+    @Override
+    public boolean deleteCustomer(int id){
+        if(customerRepo.existsById(id)){
+            customerRepo.deleteById(id);
+        }else {
+            throw new PropertyNotFoundException("Not found customer for this id");
+        }
+        return true;
+    }
+
+    @Override
+    public List<CustomerDTO> getCustomersByName(String name) {
+        List<Customer> customers = customerRepo.findAllByCustomerNameEquals(name);
+        if(customers.size() > 0){
+            List<CustomerDTO> customerDTOS = modelMapper.map(customers,new TypeToken<List<CustomerDTO>>(){}.getType());
+            return customerDTOS;
+        }else{
+            throw new PropertyNotFoundException("no resualt");
+        }
+
     }
 
 }
