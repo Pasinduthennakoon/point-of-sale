@@ -2,6 +2,7 @@ package com.pos.shopy.point_of_sale.util.mappers;
 
 import com.pos.shopy.point_of_sale.dto.CustomerDTO;
 import com.pos.shopy.point_of_sale.dto.response.ResponseActiveCustomerNameAndNumberDto;
+import com.pos.shopy.point_of_sale.dto.response.ResponseCustomerIdDTO;
 import com.pos.shopy.point_of_sale.entity.Customer;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-05-07T10:21:48+0530",
+    date = "2025-05-08T08:24:38+0530",
     comments = "version: 1.4.1.Final, compiler: javac, environment: Java 17.0.9 (Oracle Corporation)"
 )
 @Component
@@ -64,6 +65,21 @@ public class CustomerMapperImpl implements CustomerMapper {
         }
 
         return list;
+    }
+
+    @Override
+    public ResponseCustomerIdDTO entityToDtoTwo(Customer customer) {
+        if ( customer == null ) {
+            return null;
+        }
+
+        ResponseCustomerIdDTO responseCustomerIdDTO = new ResponseCustomerIdDTO();
+
+        responseCustomerIdDTO.setCustomerId( customer.getCustomerId() );
+        responseCustomerIdDTO.setCustomerAddress( customer.getCustomerAddress() );
+        responseCustomerIdDTO.setCustomerSalary( customer.getCustomerSalary() );
+
+        return responseCustomerIdDTO;
     }
 
     protected ResponseActiveCustomerNameAndNumberDto customerToResponseActiveCustomerNameAndNumberDto(Customer customer) {

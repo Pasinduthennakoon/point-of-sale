@@ -4,7 +4,9 @@ import com.pos.shopy.point_of_sale.dto.CustomerDTO;
 import com.pos.shopy.point_of_sale.dto.request.CustomerSaveRequestDTO;
 import com.pos.shopy.point_of_sale.dto.request.CustomerUpdateQuaryRequestDTO;
 import com.pos.shopy.point_of_sale.dto.request.CustomerUpdateRequestDTO;
+import com.pos.shopy.point_of_sale.dto.request.CustomerUpdateTwoRequestDTO;
 import com.pos.shopy.point_of_sale.dto.response.ResponseActiveCustomerNameAndNumberDto;
+import com.pos.shopy.point_of_sale.dto.response.ResponseCustomerIdDTO;
 import com.pos.shopy.point_of_sale.entity.Customer;
 import com.pos.shopy.point_of_sale.repo.CustomerRepo;
 import com.pos.shopy.point_of_sale.service.CustomerService;
@@ -172,6 +174,43 @@ public class CustomerServiceIMPL implements CustomerService {
             return "updated customer id : " + id;
         }else{
             return "Customer not exists id : " + id;
+        }
+    }
+
+    @Override
+    public CustomerDTO getCustomerByNic(String nic) throws Exception {
+        Optional<Customer> customer = customerRepo.findAllByNicEquals(nic);
+        if(customer.isPresent()){
+            CustomerDTO customerDTO = customerMapper.entityToDto(customer.get());
+            return customerDTO;
+        }else{
+            throw new Exception("This customer is not in database");
+        }
+    }
+
+    @Override
+    public ResponseCustomerIdDTO searchCustomerByid(int id) throws Exception {
+        Optional<Customer> customer = customerRepo.findById(id);
+        if(customer.isPresent()){
+            ResponseCustomerIdDTO responseCustomerNicDTO = customerMapper.entityToDtoTwo(customer.get());
+            return responseCustomerNicDTO;
+        }else{
+            throw new Exception("Customer not found");
+        }
+    }
+
+    @Override
+    public String updateCustomerSpecCols(CustomerUpdateTwoRequestDTO customerUpdateTwoRequestDTO, int id) throws Exception {
+        if(customerRepo.existsById(id)){
+            Customer customer = customerRepo.getReferenceById(id);
+
+            customer.setCustomerName(customerUpdateTwoRequestDTO.getCustomerName());
+            customer.setCustomerSalary(customerUpdateTwoRequestDTO.getCustomerSalary());
+
+            customerRepo.save(customer);
+            return "Customer id : " + id + " updated ";
+        }else{
+            throw new Exception("Customer not found");
         }
     }
 

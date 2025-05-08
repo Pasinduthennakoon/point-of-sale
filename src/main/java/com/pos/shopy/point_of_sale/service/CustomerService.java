@@ -4,7 +4,9 @@ import com.pos.shopy.point_of_sale.dto.CustomerDTO;
 import com.pos.shopy.point_of_sale.dto.request.CustomerSaveRequestDTO;
 import com.pos.shopy.point_of_sale.dto.request.CustomerUpdateQuaryRequestDTO;
 import com.pos.shopy.point_of_sale.dto.request.CustomerUpdateRequestDTO;
+import com.pos.shopy.point_of_sale.dto.request.CustomerUpdateTwoRequestDTO;
 import com.pos.shopy.point_of_sale.dto.response.ResponseActiveCustomerNameAndNumberDto;
+import com.pos.shopy.point_of_sale.dto.response.ResponseCustomerIdDTO;
 
 import java.util.List;
 
@@ -27,5 +29,11 @@ public interface CustomerService {
     List<ResponseActiveCustomerNameAndNumberDto> getAllCustomersByActiveStateOnlyNameAndNumber() throws Exception;
 
     String updateCustomerQuary(CustomerUpdateQuaryRequestDTO customerUpdateQuaryRequestDTO, int id);
+
+    CustomerDTO getCustomerByNic(String nic) throws Exception;
+
+    ResponseCustomerIdDTO searchCustomerByid(int id) throws Exception;
+
+    String updateCustomerSpecCols(CustomerUpdateTwoRequestDTO customerUpdateTwoRequestDTO, int id) throws Exception;
 
 }

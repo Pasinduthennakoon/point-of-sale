@@ -4,7 +4,9 @@ import com.pos.shopy.point_of_sale.dto.CustomerDTO;
 import com.pos.shopy.point_of_sale.dto.request.CustomerSaveRequestDTO;
 import com.pos.shopy.point_of_sale.dto.request.CustomerUpdateQuaryRequestDTO;
 import com.pos.shopy.point_of_sale.dto.request.CustomerUpdateRequestDTO;
+import com.pos.shopy.point_of_sale.dto.request.CustomerUpdateTwoRequestDTO;
 import com.pos.shopy.point_of_sale.dto.response.ResponseActiveCustomerNameAndNumberDto;
+import com.pos.shopy.point_of_sale.dto.response.ResponseCustomerIdDTO;
 import com.pos.shopy.point_of_sale.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -98,5 +100,33 @@ public class CustomerController {
         return state;
     }
 
+    @GetMapping(
+            path = {"/get-customer-by-nic"},
+            params = {"nic"}
+    )
+    public CustomerDTO getCustomerByNic(@RequestParam(value = "nic") String nic) throws Exception {
+        CustomerDTO customerDTO = customerService.getCustomerByNic(nic);
+        return customerDTO;
+    }
+
+    @GetMapping(
+            path = {"/get-customer-by-id"},
+            params = {"id"}
+    )
+    public ResponseCustomerIdDTO searchCustomerById(@RequestParam(value = "id") int id) throws Exception {
+        ResponseCustomerIdDTO responseCustomerNicDTO = customerService.searchCustomerByid(id);
+        return responseCustomerNicDTO;
+    }
+
+    @PutMapping(
+            path = {"/update-name-salary"},
+            params = {"id"}
+    )
+    public String updateCustomerSpecCols(
+            @RequestBody CustomerUpdateTwoRequestDTO customerUpdateTwoRequestDTO,
+            @RequestParam(value = "id") int id) throws Exception {
+        String state = customerService.updateCustomerSpecCols(customerUpdateTwoRequestDTO, id);
+        return state;
+    }
 
 }
