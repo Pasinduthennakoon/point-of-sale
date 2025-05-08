@@ -8,6 +8,7 @@ import com.pos.shopy.point_of_sale.dto.request.CustomerUpdateTwoRequestDTO;
 import com.pos.shopy.point_of_sale.dto.response.ResponseActiveCustomerNameAndNumberDto;
 import com.pos.shopy.point_of_sale.dto.response.ResponseCustomerIdDTO;
 import com.pos.shopy.point_of_sale.entity.Customer;
+import com.pos.shopy.point_of_sale.exception.NotFoundException;
 import com.pos.shopy.point_of_sale.repo.CustomerRepo;
 import com.pos.shopy.point_of_sale.service.CustomerService;
 import com.pos.shopy.point_of_sale.util.mappers.CustomerMapper;
@@ -178,13 +179,13 @@ public class CustomerServiceIMPL implements CustomerService {
     }
 
     @Override
-    public CustomerDTO getCustomerByNic(String nic) throws Exception {
+    public CustomerDTO getCustomerByNic(String nic){
         Optional<Customer> customer = customerRepo.findAllByNicEquals(nic);
         if(customer.isPresent()){
             CustomerDTO customerDTO = customerMapper.entityToDto(customer.get());
             return customerDTO;
         }else{
-            throw new Exception("This customer is not in database");
+            throw new NotFoundException("not found");
         }
     }
 
@@ -192,7 +193,7 @@ public class CustomerServiceIMPL implements CustomerService {
     public ResponseCustomerIdDTO searchCustomerByid(int id) throws Exception {
         Optional<Customer> customer = customerRepo.findById(id);
         if(customer.isPresent()){
-            ResponseCustomerIdDTO responseCustomerNicDTO = customerMapper.entityToDtoTwo(customer.get());
+            ResponseCustomerIdDTO responseCustomerNicDTO = customerMapper.entityToResponceDtoTwo(customer.get());
             return responseCustomerNicDTO;
         }else{
             throw new Exception("Customer not found");

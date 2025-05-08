@@ -30,7 +30,7 @@ public interface CustomerService {
 
     String updateCustomerQuary(CustomerUpdateQuaryRequestDTO customerUpdateQuaryRequestDTO, int id);
 
-    CustomerDTO getCustomerByNic(String nic) throws Exception;
+    CustomerDTO getCustomerByNic(String nic);
 
     ResponseCustomerIdDTO searchCustomerByid(int id) throws Exception;
 

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-05-08T08:24:38+0530",
+    date = "2025-05-08T20:43:02+0530",
     comments = "version: 1.4.1.Final, compiler: javac, environment: Java 17.0.9 (Oracle Corporation)"
 )
 @Component
@@ -68,7 +68,7 @@ public class CustomerMapperImpl implements CustomerMapper {
     }
 
     @Override
-    public ResponseCustomerIdDTO entityToDtoTwo(Customer customer) {
+    public ResponseCustomerIdDTO entityToResponceDtoTwo(Customer customer) {
         if ( customer == null ) {
             return null;
         }

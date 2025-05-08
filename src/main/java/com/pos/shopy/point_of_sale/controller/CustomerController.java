@@ -104,7 +104,7 @@ public class CustomerController {
             path = {"/get-customer-by-nic"},
             params = {"nic"}
     )
-    public CustomerDTO getCustomerByNic(@RequestParam(value = "nic") String nic) throws Exception {
+    public CustomerDTO getCustomerByNic(@RequestParam(value = "nic") String nic){
         CustomerDTO customerDTO = customerService.getCustomerByNic(nic);
         return customerDTO;
     }
