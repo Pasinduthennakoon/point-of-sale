@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "customer")
+@Table(name = "item")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -33,4 +33,7 @@ public class Item {
 
     @Column(name = "selling_price",length = 100,nullable = false)
     private double sellingPrice;
+
+    @Column(name = "active_state",columnDefinition = "TINYINT default 1")
+    private boolean activeState;
 }
