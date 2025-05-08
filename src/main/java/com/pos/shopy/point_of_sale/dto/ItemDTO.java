@@ -15,4 +15,5 @@ public class ItemDTO {
     private double balanceQty;
     private double supplierPrice;
     private double sellingPrice;
+    private boolean activeState;
 }
