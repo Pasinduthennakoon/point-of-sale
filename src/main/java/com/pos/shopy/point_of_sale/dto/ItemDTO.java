@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CostomerDTO {
+public class ItemDTO {
     private int itemId;
     private String itemName;
     private MeasuringUnitTypes measuringUnit;

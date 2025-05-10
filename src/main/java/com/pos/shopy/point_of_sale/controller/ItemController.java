@@ -1,10 +1,12 @@
 package com.pos.shopy.point_of_sale.controller;
 
-import com.pos.shopy.point_of_sale.dto.CostomerDTO;
+import com.pos.shopy.point_of_sale.dto.ItemDTO;
+import com.pos.shopy.point_of_sale.dto.paginated.PaginatedResponseItemDTO;
 import com.pos.shopy.point_of_sale.dto.request.ItemSaveRequestDTO;
 import com.pos.shopy.point_of_sale.exception.InvalidInputException;
 import com.pos.shopy.point_of_sale.service.ItemService;
 import com.pos.shopy.point_of_sale.util.StandardResponse;
+import jakarta.validation.constraints.Max;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +38,7 @@ public class ItemController {
             path = {"/get-all-item"}
     )
     public ResponseEntity<StandardResponse> getAllItems() {
-        List<CostomerDTO> allItems = itemService.getAllItems();
+        List<ItemDTO> allItems = itemService.getAllItems();
 
         return new ResponseEntity<StandardResponse>(
                 new StandardResponse(200, "Success", allItems),
@@ -53,7 +55,7 @@ public class ItemController {
 
             //return active and inactive items
             boolean status = state.equalsIgnoreCase("active") ? true : false;
-            List<CostomerDTO> allItems = itemService.getAllItemsByStateType(status);
+            List<ItemDTO> allItems = itemService.getAllItemsByStateType(status);
 
             return new ResponseEntity<StandardResponse>(
                     new StandardResponse(200, "Success", allItems),
@@ -62,7 +64,7 @@ public class ItemController {
         } else {
 
             //return all items
-            List<CostomerDTO> allItems = itemService.getAllItems();
+            List<ItemDTO> allItems = itemService.getAllItems();
 
             return new ResponseEntity<StandardResponse>(
                     new StandardResponse(200, "Success", allItems),
@@ -118,6 +120,21 @@ public class ItemController {
         }
         return new ResponseEntity<StandardResponse>(
                 new StandardResponse(200, "customer count", itemCount),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping(
+            path = {"/get-all-item-paginated"},
+            params = {"page", "size"}
+    )
+    public ResponseEntity<StandardResponse> getAllItemsPaginated(
+            @RequestParam(value = "page") int page,
+            @RequestParam(value = "size") @Max(50) int size
+    ){
+        PaginatedResponseItemDTO paginatedResponseItemDTO = itemService.getAllItemsPaginated(page, size);
+        return new ResponseEntity<StandardResponse>(
+                new StandardResponse(200, "customer count", paginatedResponseItemDTO),
                 HttpStatus.OK
         );
     }
