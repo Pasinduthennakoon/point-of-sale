@@ -2,12 +2,18 @@ package com.pos.shopy.point_of_sale.entity;
 
 import com.vladmihalcea.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
 import java.util.List;
 
 @Entity
 @Table(name = "customer")
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class Customer {
 
     @Id
@@ -35,19 +41,6 @@ public class Customer {
     @Column(name = "active_state",columnDefinition = "TINYINT default 1")
     private boolean activeState;
 
-    public Customer() {
-    }
-
-    public Customer(int customerId, String customerName, String customerAddress, double customerSalary, List<String> contactNumbers, String nic, boolean activeState) {
-        this.customerId = customerId;
-        this.customerName = customerName;
-        this.customerAddress = customerAddress;
-        this.customerSalary = customerSalary;
-        this.contactNumbers = contactNumbers;
-        this.nic = nic;
-        this.activeState = activeState;
-    }
-
     //new constructor using id is not pass in frontend
     public Customer(String customerName, String customerAddress, double customerSalary, List<String> contactNumbers, String nic, boolean activeState) {
         this.customerName = customerName;
@@ -58,72 +51,4 @@ public class Customer {
         this.activeState = activeState;
     }
 
-    public int getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
-    public String getCustomerAddress() {
-        return customerAddress;
-    }
-
-    public void setCustomerAddress(String customerAddress) {
-        this.customerAddress = customerAddress;
-    }
-
-    public double getCustomerSalary() {
-        return customerSalary;
-    }
-
-    public void setCustomerSalary(double customerSalary) {
-        this.customerSalary = customerSalary;
-    }
-
-    public List<String> getContactNumbers() {
-        return contactNumbers;
-    }
-
-    public void setContactNumbers(List<String> contactNumbers) {
-        this.contactNumbers = contactNumbers;
-    }
-
-    public String getNic() {
-        return nic;
-    }
-
-    public void setNic(String nic) {
-        this.nic = nic;
-    }
-
-    public boolean isActiveState() {
-        return activeState;
-    }
-
-    public void setActiveState(boolean activeState) {
-        this.activeState = activeState;
-    }
-
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "customerId=" + customerId +
-                ", customerName='" + customerName + '\'' +
-                ", customerAddress='" + customerAddress + '\'' +
-                ", customerSalary=" + customerSalary +
-                ", contactNumbers=" + contactNumbers +
-                ", nic='" + nic + '\'' +
-                ", activeState=" + activeState +
-                '}';
-    }
 }

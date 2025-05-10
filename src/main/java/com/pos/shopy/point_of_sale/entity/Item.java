@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.internal.bytebuddy.dynamic.loading.InjectionClassLoader;
 
 @Entity
 @Table(name = "item")
@@ -14,8 +15,8 @@ import lombok.NoArgsConstructor;
 public class Item {
 
     @Id
-    @Column(name = "item_id",length = 45)
-    @GeneratedValue(strategy = GenerationType.AUTO) //genarate id on auto
+    @Column(name = "item_id", length = 45)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int itemId;
 
     @Column(name = "item_name",length = 100,nullable = false)

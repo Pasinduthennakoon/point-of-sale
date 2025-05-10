@@ -3,6 +3,7 @@ package com.pos.shopy.point_of_sale.controller;
 import com.pos.shopy.point_of_sale.dto.CustomerDTO;
 import com.pos.shopy.point_of_sale.dto.ItemDTO;
 import com.pos.shopy.point_of_sale.dto.request.ItemSaveRequestDTO;
+import com.pos.shopy.point_of_sale.exception.InvalidInputException;
 import com.pos.shopy.point_of_sale.service.ItemService;
 import com.pos.shopy.point_of_sale.util.StandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,14 +47,12 @@ public class ItemController {
 
     @GetMapping(
             path = {"/get-all-item-by-state"},
-            params = {"state"}
+            params = {"state"} //frontend can pass to state only "active","inactive" and "all"
     )
     public ResponseEntity<StandardResponse> getAllItemsByState(@RequestParam(value = "state") String state) {
         if (state.equalsIgnoreCase("active") | state.equalsIgnoreCase("inactive")) {
-//            boolean status = false;
-//            if(state.equalsIgnoreCase("active")){
-//                status = true;
-//            }
+
+            //return active and inactive items
             boolean status = state.equalsIgnoreCase("active") ? true : false;
             List<ItemDTO> allItems = itemService.getAllItemsByStateType(status);
 
@@ -63,6 +62,7 @@ public class ItemController {
             );
         } else {
 
+            //return all items
             List<ItemDTO> allItems = itemService.getAllItems();
 
             return new ResponseEntity<StandardResponse>(
@@ -70,5 +70,36 @@ public class ItemController {
                     HttpStatus.OK
             );
         }
+    }
+
+    @PutMapping(
+            path = {"/update-item-active-state"},
+            params = {"id", "state"}
+    )
+    public ResponseEntity<StandardResponse> updateItemActiveState(@RequestParam(value = "id") int id, @RequestParam(value = "state") String state) {
+        if(state.equalsIgnoreCase("active") | state.equalsIgnoreCase("inactive")){
+
+            boolean status = state.equalsIgnoreCase("active") ? true : false;
+            String resualt = itemService.updateItemActiveState(id, status);
+
+            return new ResponseEntity<StandardResponse>(
+                    new StandardResponse(200, "success", resualt),
+                    HttpStatus.OK
+            );
+        }else {
+            throw new InvalidInputException("please enter valid input");
+        }
+    }
+
+    @DeleteMapping(
+            path = {"/delete-item-by-id/{id}"}
+    )
+    public ResponseEntity<StandardResponse> deleteItemById(@PathVariable(value = "id")int id){
+        boolean result = itemService.deleteItemById(id);
+
+        return new ResponseEntity<StandardResponse>(
+                new StandardResponse(200,"successfully deleted",result),
+                HttpStatus.OK
+        );
     }
 }

@@ -6,6 +6,7 @@ import com.pos.shopy.point_of_sale.dto.request.ItemSaveRequestDTO;
 import com.pos.shopy.point_of_sale.entity.Customer;
 import com.pos.shopy.point_of_sale.entity.Item;
 import com.pos.shopy.point_of_sale.exception.EntryDuplicationException;
+import com.pos.shopy.point_of_sale.exception.NotFoundException;
 import com.pos.shopy.point_of_sale.repo.ItemRepo;
 import com.pos.shopy.point_of_sale.service.ItemService;
 import com.pos.shopy.point_of_sale.util.mappers.ItemMapper;
@@ -53,5 +54,27 @@ public class ItemServiceIMPL implements ItemService {
 
         List<ItemDTO> itemDTOS = modelMapper.map(items,new TypeToken<List<ItemDTO>>(){}.getType());
         return itemDTOS;
+    }
+
+    @Override
+    public String updateItemActiveState(int id, boolean status) {
+        if(itemRepo.existsById(id)){
+            Item item = itemRepo.getReferenceById(id);
+            item.setActiveState(status);
+            itemRepo.save(item);
+            return "successfully updated";
+        }else{
+            throw new NotFoundException("this item not found");
+        }
+    }
+
+    @Override
+    public boolean deleteItemById(int id) {
+        if(itemRepo.existsById(id)){
+            itemRepo.deleteById(id);
+            return true;
+        }else {
+            throw new NotFoundException("not found");
+        }
     }
 }

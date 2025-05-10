@@ -12,4 +12,8 @@ public interface ItemService {
 
     List<ItemDTO> getAllItemsByStateType(boolean status);
 
+    String updateItemActiveState(int id, boolean status);
+
+    boolean deleteItemById(int id);
+
 }
