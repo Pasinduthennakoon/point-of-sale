@@ -147,8 +147,8 @@ public class CustomerServiceIMPL implements CustomerService {
     }
 
     @Override
-    public List<CustomerDTO> getAllCustomersByActiveState() throws Exception {
-        List<Customer> customers = customerRepo.findAllByActiveStateEquals(true);
+    public List<CustomerDTO> getAllCustomersByActiveState(boolean status) throws Exception {
+        List<Customer> customers = customerRepo.findAllByActiveStateEquals(status);
         if(customers.size() > 0){
             List<CustomerDTO> getcustomers = customerMapper.entityListToDtoList(customers);
             return getcustomers;
@@ -213,6 +213,14 @@ public class CustomerServiceIMPL implements CustomerService {
         }else{
             throw new Exception("Customer not found");
         }
+    }
+
+    @Override
+    public List<CustomerDTO> getAllItemsByStateType(boolean status) {
+        List<Customer> customers = customerRepo.findAllByActiveStateEquals(status);
+
+        List<CustomerDTO> customerDTOS = customerMapper.entityListToDtoList(customers);
+        return customerDTOS;
     }
 
 }

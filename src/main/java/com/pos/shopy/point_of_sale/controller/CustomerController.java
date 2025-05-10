@@ -1,6 +1,7 @@
 package com.pos.shopy.point_of_sale.controller;
 
 import com.pos.shopy.point_of_sale.dto.CustomerDTO;
+import com.pos.shopy.point_of_sale.dto.CostomerDTO;
 import com.pos.shopy.point_of_sale.dto.request.CustomerSaveRequestDTO;
 import com.pos.shopy.point_of_sale.dto.request.CustomerUpdateQuaryRequestDTO;
 import com.pos.shopy.point_of_sale.dto.request.CustomerUpdateRequestDTO;
@@ -8,7 +9,10 @@ import com.pos.shopy.point_of_sale.dto.request.CustomerUpdateTwoRequestDTO;
 import com.pos.shopy.point_of_sale.dto.response.ResponseActiveCustomerNameAndNumberDto;
 import com.pos.shopy.point_of_sale.dto.response.ResponseCustomerIdDTO;
 import com.pos.shopy.point_of_sale.service.CustomerService;
+import com.pos.shopy.point_of_sale.util.StandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -72,12 +76,18 @@ public class CustomerController {
     }
 
     @GetMapping(
-            path = {"/get-by-active-state"}
+            path = {"/get-by-active-state/{state}"}
     )
-    public List<CustomerDTO> getCustomersByActiveState() throws Exception {
-        List<CustomerDTO> customerDTOS = customerService.getAllCustomersByActiveState();
-        return customerDTOS;
+    public List<CustomerDTO> getCustomersByActiveState(@PathVariable(value = "state") String state) throws Exception {
+        if(state.equalsIgnoreCase("active") | state.equalsIgnoreCase("inactive")){
+            boolean status = state.equalsIgnoreCase("active")?true:false;
+            List<CustomerDTO> customerDTOS = customerService.getAllCustomersByActiveState(status);
+            return customerDTOS;
 
+        }else{
+            List<CustomerDTO> customerDTOS = customerService.getAllCustomers();
+            return customerDTOS;
+        }
     }
 
     @GetMapping(
@@ -127,6 +137,41 @@ public class CustomerController {
             @RequestParam(value = "id") int id) throws Exception {
         String state = customerService.updateCustomerSpecCols(customerUpdateTwoRequestDTO, id);
         return state;
+    }
+
+    @GetMapping(
+            path = {"/get-custom-count-by-state"},
+            params = {"state"} //frontend can pass to state only "active","inactive" and "all"
+    )
+    public ResponseEntity<StandardResponse> getAllCustomerCountByState(@RequestParam(value = "state") String state) {
+        int customercout = 0;
+        String message = "";
+        if (state.equalsIgnoreCase("active") | state.equalsIgnoreCase("inactive")) {
+
+            //return active and inactive customers
+            boolean status = false;
+            if (state.equalsIgnoreCase("active")) {
+                status = true;
+                List<CustomerDTO> allCustomers = customerService.getAllItemsByStateType(status);
+                customercout = allCustomers.size();
+                message = "active customers";
+
+            } else {
+                List<CustomerDTO> allCustomers = customerService.getAllItemsByStateType(status);
+                customercout = allCustomers.size();
+                message = "inactive customers";
+            }
+        } else {
+
+            //return all customers
+            List<CustomerDTO> allCustomers = customerService.getAllCustomers();
+            customercout = allCustomers.size();
+            message = "all customers";
+        }
+        return new ResponseEntity<StandardResponse>(
+                new StandardResponse(200, message, customercout),
+                HttpStatus.OK
+        );
     }
 
 }

@@ -1,9 +1,7 @@
 package com.pos.shopy.point_of_sale.service.impl;
 
-import com.pos.shopy.point_of_sale.dto.CustomerDTO;
-import com.pos.shopy.point_of_sale.dto.ItemDTO;
+import com.pos.shopy.point_of_sale.dto.CostomerDTO;
 import com.pos.shopy.point_of_sale.dto.request.ItemSaveRequestDTO;
-import com.pos.shopy.point_of_sale.entity.Customer;
 import com.pos.shopy.point_of_sale.entity.Item;
 import com.pos.shopy.point_of_sale.exception.EntryDuplicationException;
 import com.pos.shopy.point_of_sale.exception.NotFoundException;
@@ -41,18 +39,18 @@ public class ItemServiceIMPL implements ItemService {
     }
 
     @Override
-    public List<ItemDTO> getAllItems() {
+    public List<CostomerDTO> getAllItems() {
         List<Item> items = itemRepo.findAll();
 
-        List<ItemDTO> itemDTOS = modelMapper.map(items,new TypeToken<List<ItemDTO>>(){}.getType());
+        List<CostomerDTO> itemDTOS = modelMapper.map(items,new TypeToken<List<CostomerDTO>>(){}.getType());
         return itemDTOS;
     }
 
     @Override
-    public List<ItemDTO> getAllItemsByStateType(boolean status) {
+    public List<CostomerDTO> getAllItemsByStateType(boolean status) {
         List<Item> items = itemRepo.findAllByActiveStateEquals(status);
 
-        List<ItemDTO> itemDTOS = modelMapper.map(items,new TypeToken<List<ItemDTO>>(){}.getType());
+        List<CostomerDTO> itemDTOS = modelMapper.map(items,new TypeToken<List<CostomerDTO>>(){}.getType());
         return itemDTOS;
     }
 

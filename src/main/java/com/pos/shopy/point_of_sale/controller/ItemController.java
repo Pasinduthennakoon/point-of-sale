@@ -1,7 +1,6 @@
 package com.pos.shopy.point_of_sale.controller;
 
-import com.pos.shopy.point_of_sale.dto.CustomerDTO;
-import com.pos.shopy.point_of_sale.dto.ItemDTO;
+import com.pos.shopy.point_of_sale.dto.CostomerDTO;
 import com.pos.shopy.point_of_sale.dto.request.ItemSaveRequestDTO;
 import com.pos.shopy.point_of_sale.exception.InvalidInputException;
 import com.pos.shopy.point_of_sale.service.ItemService;
@@ -37,7 +36,7 @@ public class ItemController {
             path = {"/get-all-item"}
     )
     public ResponseEntity<StandardResponse> getAllItems() {
-        List<ItemDTO> allItems = itemService.getAllItems();
+        List<CostomerDTO> allItems = itemService.getAllItems();
 
         return new ResponseEntity<StandardResponse>(
                 new StandardResponse(200, "Success", allItems),
@@ -54,7 +53,7 @@ public class ItemController {
 
             //return active and inactive items
             boolean status = state.equalsIgnoreCase("active") ? true : false;
-            List<ItemDTO> allItems = itemService.getAllItemsByStateType(status);
+            List<CostomerDTO> allItems = itemService.getAllItemsByStateType(status);
 
             return new ResponseEntity<StandardResponse>(
                     new StandardResponse(200, "Success", allItems),
@@ -63,7 +62,7 @@ public class ItemController {
         } else {
 
             //return all items
-            List<ItemDTO> allItems = itemService.getAllItems();
+            List<CostomerDTO> allItems = itemService.getAllItems();
 
             return new ResponseEntity<StandardResponse>(
                     new StandardResponse(200, "Success", allItems),
@@ -99,6 +98,41 @@ public class ItemController {
 
         return new ResponseEntity<StandardResponse>(
                 new StandardResponse(200,"successfully deleted",result),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping(
+            path = {"/get-item-count-by-state"},
+            params = {"state"} //frontend can pass to state only "active","inactive" and "all"
+    )
+    public ResponseEntity<StandardResponse> getAllItemsCountByState(@RequestParam(value = "state") String state) {
+        int itemcout = 0;
+        String message = "";
+        if (state.equalsIgnoreCase("active") | state.equalsIgnoreCase("inactive")) {
+
+            //return active and inactive items
+            boolean status = false;
+            if(state.equalsIgnoreCase("active")){
+                status = true;
+                List<CostomerDTO> allItems = itemService.getAllItemsByStateType(status);
+                itemcout = allItems.size();
+                message = "active items";
+
+            }else{
+                List<CostomerDTO> allItems = itemService.getAllItemsByStateType(status);
+                itemcout = allItems.size();
+                message = "inactive items";
+            }
+        } else {
+
+            //return all items
+            List<CostomerDTO> allItems = itemService.getAllItems();
+            itemcout = allItems.size();
+            message = "all items";
+        }
+        return new ResponseEntity<StandardResponse>(
+                new StandardResponse(200, message, itemcout),
                 HttpStatus.OK
         );
     }

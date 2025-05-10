@@ -24,7 +24,7 @@ public interface CustomerService {
 
     List<CustomerDTO> getCustomersByName(String name);
 
-    List<CustomerDTO> getAllCustomersByActiveState() throws Exception;
+    List<CustomerDTO> getAllCustomersByActiveState(boolean status) throws Exception;
 
     List<ResponseActiveCustomerNameAndNumberDto> getAllCustomersByActiveStateOnlyNameAndNumber() throws Exception;
 
@@ -36,4 +36,5 @@ public interface CustomerService {
 
     String updateCustomerSpecCols(CustomerUpdateTwoRequestDTO customerUpdateTwoRequestDTO, int id) throws Exception;
 
+    List<CustomerDTO> getAllItemsByStateType(boolean status);
 }
