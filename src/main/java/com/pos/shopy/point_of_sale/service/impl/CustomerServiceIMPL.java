@@ -216,11 +216,16 @@ public class CustomerServiceIMPL implements CustomerService {
     }
 
     @Override
-    public List<CustomerDTO> getAllItemsByStateType(boolean status) {
-        List<Customer> customers = customerRepo.findAllByActiveStateEquals(status);
-
-        List<CustomerDTO> customerDTOS = customerMapper.entityListToDtoList(customers);
-        return customerDTOS;
+    public int countCustomerByActiveState(boolean status) {
+        int numberOfCustomers = customerRepo.countAllByActiveStateEquals(status);
+        return numberOfCustomers;
     }
+
+    @Override
+    public long countAllCustomers() {
+        long numberOfCustomers = customerRepo.count();
+        return numberOfCustomers;
+    }
+
 
 }

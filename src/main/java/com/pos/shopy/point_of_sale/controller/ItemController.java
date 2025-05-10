@@ -106,33 +106,18 @@ public class ItemController {
             path = {"/get-item-count-by-state"},
             params = {"state"} //frontend can pass to state only "active","inactive" and "all"
     )
-    public ResponseEntity<StandardResponse> getAllItemsCountByState(@RequestParam(value = "state") String state) {
-        int itemcout = 0;
-        String message = "";
+    public ResponseEntity<StandardResponse> getAllItemCountByState(@RequestParam(value = "state") String state) {
+        long itemCount = 0;
         if (state.equalsIgnoreCase("active") | state.equalsIgnoreCase("inactive")) {
 
-            //return active and inactive items
-            boolean status = false;
-            if(state.equalsIgnoreCase("active")){
-                status = true;
-                List<CostomerDTO> allItems = itemService.getAllItemsByStateType(status);
-                itemcout = allItems.size();
-                message = "active items";
+            boolean status = state.equalsIgnoreCase("active") ? true : false;
+            itemCount = itemService.countItemByActiveState(status);
 
-            }else{
-                List<CostomerDTO> allItems = itemService.getAllItemsByStateType(status);
-                itemcout = allItems.size();
-                message = "inactive items";
-            }
         } else {
-
-            //return all items
-            List<CostomerDTO> allItems = itemService.getAllItems();
-            itemcout = allItems.size();
-            message = "all items";
+            itemCount = itemService.countAllItems();
         }
         return new ResponseEntity<StandardResponse>(
-                new StandardResponse(200, message, itemcout),
+                new StandardResponse(200, "customer count", itemCount),
                 HttpStatus.OK
         );
     }

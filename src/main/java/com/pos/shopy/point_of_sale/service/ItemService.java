@@ -16,4 +16,8 @@ public interface ItemService {
 
     boolean deleteItemById(int id);
 
+    long countItemByActiveState(boolean status);
+
+    long countAllItems();
+
 }

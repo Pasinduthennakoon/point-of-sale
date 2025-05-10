@@ -12,4 +12,6 @@ import java.util.List;
 public interface ItemRepo extends JpaRepository<Item, Integer> {
     List<Item> findAllByActiveStateEquals(boolean status);
 
+    long countAllByActiveStateEquals(boolean status);
+
 }

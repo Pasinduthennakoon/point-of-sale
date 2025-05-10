@@ -36,5 +36,8 @@ public interface CustomerService {
 
     String updateCustomerSpecCols(CustomerUpdateTwoRequestDTO customerUpdateTwoRequestDTO, int id) throws Exception;
 
-    List<CustomerDTO> getAllItemsByStateType(boolean status);
+    int countCustomerByActiveState(boolean status);
+
+    long countAllCustomers();
+
 }

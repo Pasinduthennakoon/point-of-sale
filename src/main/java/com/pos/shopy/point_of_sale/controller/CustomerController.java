@@ -70,7 +70,7 @@ public class CustomerController {
             path = {"/get-by-name"},
             params = "name"
     )
-    public List<CustomerDTO> getCustomersByName(@RequestParam(value = "name")String name){
+    public List<CustomerDTO> getCustomersByName(@RequestParam(value = "name") String name) {
         List<CustomerDTO> customers = customerService.getCustomersByName(name);
         return customers;
     }
@@ -79,12 +79,12 @@ public class CustomerController {
             path = {"/get-by-active-state/{state}"}
     )
     public List<CustomerDTO> getCustomersByActiveState(@PathVariable(value = "state") String state) throws Exception {
-        if(state.equalsIgnoreCase("active") | state.equalsIgnoreCase("inactive")){
-            boolean status = state.equalsIgnoreCase("active")?true:false;
+        if (state.equalsIgnoreCase("active") | state.equalsIgnoreCase("inactive")) {
+            boolean status = state.equalsIgnoreCase("active") ? true : false;
             List<CustomerDTO> customerDTOS = customerService.getAllCustomersByActiveState(status);
             return customerDTOS;
 
-        }else{
+        } else {
             List<CustomerDTO> customerDTOS = customerService.getAllCustomers();
             return customerDTOS;
         }
@@ -104,8 +104,7 @@ public class CustomerController {
     )
     public String updateCustomer(
             @RequestBody CustomerUpdateQuaryRequestDTO customerUpdateQuaryRequestDTO,
-            @PathVariable(value = "id") int id)
-    {
+            @PathVariable(value = "id") int id) {
         String state = customerService.updateCustomerQuary(customerUpdateQuaryRequestDTO, id);
         return state;
     }
@@ -114,7 +113,7 @@ public class CustomerController {
             path = {"/get-customer-by-nic"},
             params = {"nic"}
     )
-    public CustomerDTO getCustomerByNic(@RequestParam(value = "nic") String nic){
+    public CustomerDTO getCustomerByNic(@RequestParam(value = "nic") String nic) {
         CustomerDTO customerDTO = customerService.getCustomerByNic(nic);
         return customerDTO;
     }
@@ -144,32 +143,17 @@ public class CustomerController {
             params = {"state"} //frontend can pass to state only "active","inactive" and "all"
     )
     public ResponseEntity<StandardResponse> getAllCustomerCountByState(@RequestParam(value = "state") String state) {
-        int customercout = 0;
-        String message = "";
+        long customercout = 0;
         if (state.equalsIgnoreCase("active") | state.equalsIgnoreCase("inactive")) {
 
-            //return active and inactive customers
-            boolean status = false;
-            if (state.equalsIgnoreCase("active")) {
-                status = true;
-                List<CustomerDTO> allCustomers = customerService.getAllItemsByStateType(status);
-                customercout = allCustomers.size();
-                message = "active customers";
+            boolean status = state.equalsIgnoreCase("active") ? true : false;
+            customercout = customerService.countCustomerByActiveState(status);
 
-            } else {
-                List<CustomerDTO> allCustomers = customerService.getAllItemsByStateType(status);
-                customercout = allCustomers.size();
-                message = "inactive customers";
-            }
         } else {
-
-            //return all customers
-            List<CustomerDTO> allCustomers = customerService.getAllCustomers();
-            customercout = allCustomers.size();
-            message = "all customers";
+            customercout = customerService.countAllCustomers();
         }
         return new ResponseEntity<StandardResponse>(
-                new StandardResponse(200, message, customercout),
+                new StandardResponse(200, "customer count", customercout),
                 HttpStatus.OK
         );
     }

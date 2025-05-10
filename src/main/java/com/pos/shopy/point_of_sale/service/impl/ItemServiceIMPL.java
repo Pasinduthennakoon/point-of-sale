@@ -75,4 +75,16 @@ public class ItemServiceIMPL implements ItemService {
             throw new NotFoundException("not found");
         }
     }
+
+    @Override
+    public long countItemByActiveState(boolean status) {
+        long countItems = itemRepo.countAllByActiveStateEquals(status);
+        return countItems;
+    }
+
+    @Override
+    public long countAllItems() {
+        long countItems = itemRepo.count();
+        return countItems;
+    }
 }
