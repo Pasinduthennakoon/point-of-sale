@@ -91,7 +91,7 @@ public class OrderServiceIMPL implements OrderService {
 
         return new PaginatedResponseOrderDetailsDTO(
                 list,
-                5L
+                orderRepo.countAllOrderDetails(status)
         );
     }
 }
