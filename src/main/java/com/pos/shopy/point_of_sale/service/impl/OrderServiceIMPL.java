@@ -1,7 +1,10 @@
 package com.pos.shopy.point_of_sale.service.impl;
 
 import com.pos.shopy.point_of_sale.dto.CustomerDTO;
+import com.pos.shopy.point_of_sale.dto.paginated.PaginatedResponseOrderDetailsDTO;
+import com.pos.shopy.point_of_sale.dto.queryinterface.OrderDetailsInterface;
 import com.pos.shopy.point_of_sale.dto.request.OrderSaveRequestDTO;
+import com.pos.shopy.point_of_sale.dto.response.ResponseOrderDetailsDTO;
 import com.pos.shopy.point_of_sale.entity.Order;
 import com.pos.shopy.point_of_sale.entity.OrderDetails;
 import com.pos.shopy.point_of_sale.repo.CustomerRepo;
@@ -13,8 +16,10 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -42,25 +47,51 @@ public class OrderServiceIMPL implements OrderService {
         Order order = new Order(
                 customerRepo.getReferenceById(orderSaveRequestDTO.getCustomer()),
                 orderSaveRequestDTO.getDate(),
-                orderSaveRequestDTO.getTotal()
+                orderSaveRequestDTO.getTotal(),
+                orderSaveRequestDTO.isActiveState()
 
         );
         orderRepo.save(order);
 
-        if (orderRepo.existsById(order.getOrderId())){
-            List<OrderDetails> orderDetails = modelMapper.map(orderSaveRequestDTO.getOrderDetails(),new TypeToken<List<OrderDetails>>(){}.getType());
+        if (orderRepo.existsById(order.getOrderId())) {
+            List<OrderDetails> orderDetails = modelMapper.map(orderSaveRequestDTO.getOrderDetails(), new TypeToken<List<OrderDetails>>() {
+            }.getType());
 
             //to set order id and item id of order details entity
-            for(int i = 0; i < orderDetails.size(); i++){
+            for (int i = 0; i < orderDetails.size(); i++) {
                 orderDetails.get(i).setOrders(order);
                 orderDetails.get(i).setItems(itemRepo.getReferenceById(orderSaveRequestDTO.getOrderDetails().get(i).getItems()));
             }
 
-            if (orderDetails.size() > 0){
+            if (orderDetails.size() > 0) {
                 orderDetailsRepo.saveAll(orderDetails);
             }
             return "saved";
         }
         return null;
+    }
+
+    @Override
+    public PaginatedResponseOrderDetailsDTO getAllOrderDetails(boolean status, int page, int size) {
+        List<OrderDetailsInterface> orderDetailsInterfaces = orderRepo.getAllOrderDetails(status, PageRequest.of(page, size));
+        System.out.println(orderDetailsInterfaces.get(0).getCustomerName());
+
+        List<ResponseOrderDetailsDTO> list = new ArrayList<>();
+        for (OrderDetailsInterface o : orderDetailsInterfaces) {
+            list.add(
+                    new ResponseOrderDetailsDTO(
+                            o.getCustomerName(),
+                            o.getCustomerAddress(),
+                            o.getContactNumbers(),
+                            o.getDate(),
+                            o.getTotal()
+                    )
+            );
+        }
+
+        return new PaginatedResponseOrderDetailsDTO(
+                list,
+                5L
+        );
     }
 }

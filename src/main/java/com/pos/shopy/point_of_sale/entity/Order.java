@@ -30,12 +30,16 @@ public class Order {
     @Column(name = "total", nullable = false)
     private double total;
 
+    @Column(name = "active_state", columnDefinition = "TINYINT default 1")
+    private boolean activeState;
+
     @OneToMany(mappedBy="orders")
     private Set<OrderDetails> orderDetails;
 
-    public Order(Customer customer, Date date, double total) {
+    public Order(Customer customer, Date date, double total, boolean activeState) {
         this.customer = customer;
         this.date = date;
         this.total = total;
+        this.activeState = activeState;
     }
 }

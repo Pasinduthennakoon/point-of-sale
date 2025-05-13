@@ -67,7 +67,7 @@ public class CustomerServiceIMPL implements CustomerService {
             customer.setNic(customerUpdateRequestDTO.getNic());
             customer.setActiveState(customerUpdateRequestDTO.isActiveState());
 
-            customerRepo.save(customer);
+            customerRepo.save(customer);//query methods
             return customer.getCustomerName() + " Updated";
         } else {
             System.out.println("that customer no longer in the database");
