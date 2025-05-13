@@ -8,4 +8,6 @@ public interface OrderService {
 
     PaginatedResponseOrderDetailsDTO getAllOrderDetails(boolean status, int page, int size);
 
+    PaginatedResponseOrderDetailsDTO getAllOrderDetailsWithoutStatus(int page, int size);
+
 }

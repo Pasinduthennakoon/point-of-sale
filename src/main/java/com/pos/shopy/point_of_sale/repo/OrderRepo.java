@@ -19,7 +19,16 @@ public interface OrderRepo extends JpaRepository<Order, Integer> {
             "from customer c, orders o where o.active_state =?1 and c.customer_id = o.customer_id", nativeQuery = true)
     List<OrderDetailsInterface> getAllOrderDetails(boolean status, PageRequest of);
 
-    @Query(value = "select count(*) from customer c, orders o where o.active_state =?1 and c.customer_id = o.customer_id", nativeQuery = true)
+    @Query(value = "select count(*) from customer c, orders o where o.active_state =?1 and c.customer_id = o.customer_id",
+            nativeQuery = true)
     Long countAllOrderDetails(boolean status);
+
+    @Query(value = "select c.customer_name as customerName, c.customer_address as customerAddress\n" +
+            ", c.contact_numbers as contactNumbers, o.order_date as date, o.total as total\n" +
+            "from customer c, orders o where c.customer_id = o.customer_id", nativeQuery = true)
+    List<OrderDetailsInterface> getAllOrderDetailsWithoutStatus(PageRequest of);
+
+    @Query(value = "select count(*) from customer c, orders o where c.customer_id = o.customer_id", nativeQuery = true)
+    Long countAllOrderDetailsWithoutStatus();
 
 }

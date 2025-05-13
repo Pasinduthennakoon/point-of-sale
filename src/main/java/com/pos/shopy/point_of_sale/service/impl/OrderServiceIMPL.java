@@ -74,7 +74,6 @@ public class OrderServiceIMPL implements OrderService {
     @Override
     public PaginatedResponseOrderDetailsDTO getAllOrderDetails(boolean status, int page, int size) {
         List<OrderDetailsInterface> orderDetailsInterfaces = orderRepo.getAllOrderDetails(status, PageRequest.of(page, size));
-        System.out.println(orderDetailsInterfaces.get(0).getCustomerName());
 
         List<ResponseOrderDetailsDTO> list = new ArrayList<>();
         for (OrderDetailsInterface o : orderDetailsInterfaces) {
@@ -92,6 +91,29 @@ public class OrderServiceIMPL implements OrderService {
         return new PaginatedResponseOrderDetailsDTO(
                 list,
                 orderRepo.countAllOrderDetails(status)
+        );
+    }
+
+    @Override
+    public PaginatedResponseOrderDetailsDTO getAllOrderDetailsWithoutStatus(int page, int size) {
+        List<OrderDetailsInterface> orderDetailsInterfaces = orderRepo.getAllOrderDetailsWithoutStatus(PageRequest.of(page, size));
+
+        List<ResponseOrderDetailsDTO> list = new ArrayList<>();
+        for (OrderDetailsInterface o : orderDetailsInterfaces) {
+            list.add(
+                    new ResponseOrderDetailsDTO(
+                            o.getCustomerName(),
+                            o.getCustomerAddress(),
+                            o.getContactNumbers(),
+                            o.getDate(),
+                            o.getTotal()
+                    )
+            );
+        }
+
+        return new PaginatedResponseOrderDetailsDTO(
+                list,
+                orderRepo.countAllOrderDetailsWithoutStatus()
         );
     }
 }

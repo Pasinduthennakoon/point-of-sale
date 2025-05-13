@@ -43,14 +43,10 @@ public class OrderController {
         if(stateType.equalsIgnoreCase("active") | stateType.equalsIgnoreCase("inactive")){
             boolean status = stateType.equalsIgnoreCase("active") ? true : false;
             paginatedResponseOrderDetailsDTO = orderService.getAllOrderDetails(status, page, size);
+        }else{
+            paginatedResponseOrderDetailsDTO = orderService.getAllOrderDetailsWithoutStatus(page, size);
         }
-
-
-
-
-
-
-
+        
         return new ResponseEntity<StandardResponse>(
                 new StandardResponse(200,"success",paginatedResponseOrderDetailsDTO),
                 HttpStatus.OK
